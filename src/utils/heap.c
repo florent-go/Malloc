@@ -1,5 +1,14 @@
 #include "../../include/malloc.h"
 
+t_zoneMemoireType get_heap_group(size_t size)
+{
+    if (size <= (size_t)TINY_BLOCK_SIZE)
+        return (TINY);
+    else if (size <= (size_t)SMALL_BLOCK_SIZE)
+        return (SMALL);
+    return (LARGE);
+}
+
 size_t get_heap_size(size_t size)
 {
     t_zoneMemoireType group;
@@ -32,6 +41,7 @@ page_memory_t *create_heap(t_zoneMemoireType group, size_t block_size)
     heap = (page_memory_t *)mmap(NULL, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1,0);
     if (heap == MAP_FAILED)
         return (NULL);
+    ft_bzero(heap, sizeof(heap));
     heap->type = group;
     heap->total_len = heap_size;
     heap->free_len = heap_size - sizeof(page_memory_t);
@@ -66,6 +76,10 @@ page_memory_t *get_heap_of_block(const size_t size)
     {
         if (!(heap = create_heap(heap_group, size)))
             return (NULL);
-        
+        heap->next = default_heap;
+        if (heap->next)
+            heap->next->prev = heap;
+        g_page_memory = heap;
     }
+    return (heap);
 }

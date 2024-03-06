@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <sys/mman.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -41,7 +39,8 @@ typedef struct page_memory
 
 extern page_memory_t *g_page_memory;
 
-
+void *malloc(size_t size);
+void *start_malloc(size_t size);
 
 
 void setup_block(block_memory_t *block, size_t size);
@@ -49,4 +48,14 @@ void *Add_Empty_Block(page_memory_t *heap, size_t size);
 void find_available_block(size_t size, page_memory_t **res_heap, block_memory_t **res_block);
 static void divide_block(block_memory_t *block, size_t size, page_memory_t *heap);
 block_memory_t *try_fill_block(size_t size);
+
 t_zoneMemoireType get_heap_group(size_t size);
+page_memory_t *get_heap_of_block(const size_t size);
+page_memory_t *get_available_heap(page_memory_t *start, t_zoneMemoireType group, size_t require_size);
+page_memory_t *create_heap(t_zoneMemoireType group, size_t block_size);
+static rlim_t get_system_limit(void);
+size_t get_heap_size(size_t size);
+
+void *ft_memcpy(void *dst, const void *src, size_t n);
+void *ft_memset(void *b, int c, size_t len);
+void ft_bzero(void *s, size_t n);
