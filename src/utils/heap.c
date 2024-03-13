@@ -9,6 +9,15 @@ t_zoneMemoireType get_heap_group(size_t size)
     return (LARGE);
 }
 
+page_memory_t *get_heap_last(page_memory_t *heap)
+{
+    if (!heap)
+        return (NULL);
+    while(heap->next)
+        heap = heap->next;
+    return (heap);
+}
+
 size_t get_heap_size(size_t size)
 {
     t_zoneMemoireType group;

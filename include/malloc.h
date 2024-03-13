@@ -54,8 +54,13 @@ page_memory_t *get_heap_of_block(const size_t size);
 page_memory_t *get_available_heap(page_memory_t *start, t_zoneMemoireType group, size_t require_size);
 page_memory_t *create_heap(t_zoneMemoireType group, size_t block_size);
 static rlim_t get_system_limit(void);
+page_memory_t *get_heap_last(page_memory_t *heap);
 size_t get_heap_size(size_t size);
+
+void    show_alloc_mem(void);
 
 void *ft_memcpy(void *dst, const void *src, size_t n);
 void *ft_memset(void *b, int c, size_t len);
+void ft_putstr(char const *s);
 void ft_bzero(void *s, size_t n);
+void ft_itoa_base(size_t nb, char base, char lenght, bool prefixe);
