@@ -1,6 +1,18 @@
 {
     "files.associations": {
-        "stdlib.h": "c",
-        "malloc.h": "c"
+        "malloc.h": "c",
+        "array": "c",
+        "charconv": "c",
+        "compare": "c",
+        "functional": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c",
+        "string_view": "c",
+        "format": "c",
+        "initializer_list": "c",
+        "span": "c"
     }
 }

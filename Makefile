@@ -2,40 +2,45 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-PATH_INC = include
-PATH_OBJ = obj
-PATH_SRC = src
+NAME = libft_malloc_$(HOSTTYPE).so
+SYMLINK = libft_malloc.so
 
-SOURCES += utils/block.c malloc.c
+# LIBFT_DIR = ./libft
+SRC_DIR = ./srcs
+OBJ_DIR = ./objs
+INCLUDE_DIR = ./includes
+
+CC = cc
+# CFLAGS = -Wall -Wextra -Werror -fPIC
+CFLAGS = -fPIC
+LDFLAGS = -shared
+
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+SOURCES = srcs/*.c
 
 OBJECTS = $(SOURCES:%.c=$(PATH_OBJ)/%.o)
 
-NAME = libft_malloc_$(HOSTTYPE).so
-LIB_NAME = libft_malloc.so
-CC = gcc
-FLAG_CC = -fPIC
-FLAGS_LIB = -shared
-
-.PHONY: all clean fclean re
-
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-		$(CC) $(FLAGS_LIB) -o $@ $(OBJECTS)
-		@rm -f $(LIB_NAME)
-		ln -s $(NAME) $(LIB_NAME)
-		@echo "Make done"
+$(NAME): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
+	ln -sf $(NAME) $(SYMLINK)
+	echo "✅ Compilation terminée : $(NAME)"
 
-$(PATH_OBJ)/%.o: $(PATH_SRC)/%.c
-		@mkdir -p $(@D)
-		$(CC) -c -o $@ $(FLAG_CC) $^ -g -I $(PATH_INC)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@
+
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
 
 clean:
-		@rm -rf $(PATH_OBJ)
-		@echo "Clean done"
+	@rm -rf $(OBJ_DIR)
+	@echo "🧹 Nettoyage des fichiers objets."
 
 fclean: clean
-		@rm -f $(NAME) $(LIB_NAME)
-		@echo "fclean done"
+	@rm -f $(NAME) $(SYMLINK)
+	@echo "🚮 Suppression complète."
 
-re: fclean $(NAME)
+re: fclean all
