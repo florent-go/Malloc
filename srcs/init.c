@@ -1,10 +1,10 @@
-#include <../includes/malloc.h>
+#include "../includes/malloc.h"
 
 t_pagetype      get_type(size_t size)
 {
-    if (size <= TINY_BLOCK_SIZE)
+    if (size <= (size_t)TINY_BLOCK_SIZE)
         return (TINY);
-    else if (size <= SMALL_BLOCK_SIZE)
+    else if (size <= (size_t)SMALL_BLOCK_SIZE)
         return (SMALL);
     return (LARGE);
 }

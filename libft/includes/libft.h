@@ -45,15 +45,20 @@ int					ft_putchar_int(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+
+void				ft_putstr(char const *s);
 void				ft_putstr_fd(char *s, int fd);
+
 char				*ft_strchr(const char *s, int c);
 char				*ft_strcpy(char *dest, char *src);
 char				*ft_strdup(char *src);
 char				*ft_strjoin(const char *s1, const char *s2);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlcpy(char *dest, const char *src, size_t n);
+
 int					ft_strlen(char *str);
 size_t				ft_strlen_size_t(char const *str);
+
 int					ft_strncmp(char *s1, char *s2, unsigned int n);
 char				*ft_strnstr(const char *s1, const char *s2, size_t len);
 char				*ft_strrchr(const char *s, int c);

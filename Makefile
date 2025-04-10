@@ -5,42 +5,51 @@ endif
 NAME = libft_malloc_$(HOSTTYPE).so
 SYMLINK = libft_malloc.so
 
-# LIBFT_DIR = ./libft
-SRC_DIR = ./srcs
-OBJ_DIR = ./objs
-INCLUDE_DIR = ./includes
-
-CC = cc
-# CFLAGS = -Wall -Wextra -Werror -fPIC
-CFLAGS = -fPIC
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -fPIC
 LDFLAGS = -shared
 
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SRCS_DIR = srcs/
+LIBFT_SRCS_DIR = libft/srcs/
+FT_PRINTF_SRCS_DIR = libft/ft_printf/srcs/
 
-SOURCES = srcs/*.c
+VPATH := $(SRCS_DIR) $(LIBFT_SRCS_DIR) $(FT_PRINTF_SRCS_DIR)
 
-OBJECTS = $(SOURCES:%.c=$(PATH_OBJ)/%.o)
+OBJS_DIR = objs/
+INC_DIR = includes/ libft/includes/ libft/ft_printf/includes/
 
-all: $(NAME)
+SRCS = $(wildcard $(SRCS_DIR)*.c)
+LIBFT_SRCS = $(wildcard $(LIBFT_SRCS_DIR)*.c)
+FT_PRINTF_SRCS = $(wildcard $(FT_PRINTF_SRCS_DIR)*.c)
+
+INC := $(addprefix -I, $(INC_DIR))
+
+ALL_SRCS := $(SRCS) $(LIBFT_SRCS) $(FT_PRINTF_SRCS)
+
+OBJS := $(patsubst %.c, $(OBJS_DIR)%.o, $(notdir $(ALL_SRCS)))
+
+all: $(OBJS_DIR) $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
-	ln -sf $(NAME) $(SYMLINK)
+	$(CC) $(LDFLAGS) -o $@ $^
+	ln -sf $@ $(SYMLINK)
 	echo "✅ Compilation terminée : $(NAME)"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@
+$(OBJS_DIR)%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
 
 clean:
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJS_DIR)
 	@echo "🧹 Nettoyage des fichiers objets."
 
 fclean: clean
-	@rm -f $(NAME) $(SYMLINK)
+	@rm -rf $(NAME) $(SYMLINK)
 	@echo "🚮 Suppression complète."
 
 re: fclean all
+
+.PHONY: all clean fclean re

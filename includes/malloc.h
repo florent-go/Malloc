@@ -1,6 +1,9 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
+#include "../libft/ft_printf/includes/ft_printf.h"
+#include "../libft/includes/libft.h"
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -43,14 +46,14 @@ extern          t_data *g_data;
 
 void            *malloc(size_t size);
 void            *start_malloc(size_t size);
-static bool     init_struct();
+bool            init_struct();
 
-void            *alloc_large_memory(const size_t size);
+void            *large_alloc_memory(const size_t size);
 
 void            *small_alloc_memory(size_t size, t_pagetype type);
-static void     *small_alloc_memory2(size_t size, t_pagetype type, void *ptr);
-static bool	    alloc_new_slot(void *ptr, t_pagetype type);
-static bool     init(t_pagetype type);
+void            *small_alloc_memory2(size_t size, t_pagetype type, void *ptr);
+bool	        alloc_new_slot(void *ptr, t_pagetype type);
+bool            init(t_pagetype type);
 
 t_pagetype      get_type(size_t size);
 void            fill_struct_alloc(t_page *heap, t_page *prev, size_t size);

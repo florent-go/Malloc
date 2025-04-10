@@ -1,4 +1,4 @@
-#include <../includes/malloc.h>
+#include "../includes/malloc.h"
 
 static int	print_alloc(void *ptr, size_t *total_octet)
 {
@@ -33,8 +33,9 @@ void		show_alloc_mem(void)
 
 	total_octet = 0;
 	total = 0;
-	if (!g_data)
+	if (!g_data) {
 		printf("total: %d block (%zu octets)\n", total, total_octet);
+	}
 	printf("TINY: %p\n", g_data->ptr_tiny);
 	ptr = g_data->ptr_tiny;
 	total += print_alloc(ptr, &total_octet);
